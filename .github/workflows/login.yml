@@ -1,31 +1,31 @@
-name: Netlib Keepalive   # 工作流程名称：Netlib 保活
+name: Netlib Keepalive
 
 on:
-  schedule:
-    - cron: '0 0 */30 * *'  # 每30天运行一次（UTC 0点，相当于北京时间早上8点）
-  workflow_dispatch:  # 允许手动触发工作流程
+  # schedule:
+  #   - cron: '0 0 */30 * *'  # 每30天运行一次（时间早上8点）
+  workflow_dispatch:  # 允许手动运行
 
 jobs:
-  auto_login_netlib:   # 定义一个名为 auto_login_netlib 的任务
-    runs-on: ubuntu-latest   # 任务运行在最新版 Ubuntu 环境上
+  auto_login_netlib:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout   # 第一步：检出仓库代码
-        uses: actions/checkout@v4  # 使用 GitHub 官方 checkout 动作
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js   # 设置 Node.js 环境
-        uses: actions/setup-node@v4   # 使用 setup-node 动作
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'   # 指定 Node.js 版本为 v20
+          node-version: '20'
 
-      - name: Install dependencies   # 安装项目依赖
-        run: npm install   # 运行 npm install
+      - name: Install dependencies
+        run: npm install
 
-      - name: Install Playwright and browser   # 安装 Playwright 和 Chromium 浏览器
-        run: npx playwright install --with-deps chromium   # 安装 Playwright 的 Chromium 版本和依赖
+      - name: Install Playwright and browser
+        run: npx playwright install --with-deps chromium
 
-      - name: Run lognin script   # 执行登录脚本
+      - name: Run lognin script
         env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}   # 注入 Telegram Bot Token 环境变量
-          CHAT_ID: ${{ secrets.CHAT_ID }}       # 注入 Telegram Chat ID 环境变量
-          ACCOUNTS: ${{ secrets.ACCOUNTS }}     # 注入账号信息（自定义）
-        run: npm start   # 执行 npm start 启动脚本
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+          ACCOUNTS: ${{ secrets.ACCOUNTS }}
+        run: npm start
